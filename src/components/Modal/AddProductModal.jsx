@@ -1,7 +1,5 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { API } from "../../config/API";
-import { useMutation } from "react-query";
 import { kontenbase } from "../../config/base";
 
 export default function AddProductModal({ state, setState }) {
@@ -19,7 +17,7 @@ export default function AddProductModal({ state, setState }) {
     stok: "",
   });
 
-  const { name, price_buy, image, notes, stok, price_sell } = addProduct;
+  const { name, price_buy, notes, stok, price_sell } = addProduct;
 
   const handleChange = (e) => {
     setAddProduct({
@@ -73,7 +71,6 @@ export default function AddProductModal({ state, setState }) {
   };
 
   const handleChangeImage = async (e) => {
-    const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
     const file = e.target.files[0];
     const { data, error: uploadError } = await kontenbase.storage.upload(file);
 
@@ -142,7 +139,7 @@ export default function AddProductModal({ state, setState }) {
             placeholder="Stok"
           />
           <input
-            type="text"
+            type="number"
             name="price_buy"
             onChange={handleChange}
             value={price_buy}
@@ -150,7 +147,7 @@ export default function AddProductModal({ state, setState }) {
             placeholder="Price exam: 5000000"
           />
           <input
-            type="text"
+            type="number"
             name="price_sell"
             onChange={handleChange}
             value={price_sell}
