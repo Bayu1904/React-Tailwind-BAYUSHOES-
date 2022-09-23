@@ -3,6 +3,8 @@ import { kontenbase } from "../../config/base";
 
 export default function UpdateProduct({ update, setUpdate, id }) {
   const [preview, setPreview] = useState(null);
+  const [alertI, setAlertI] = useState();
+
   const [nameUrl, setNameUrl] = useState();
   const [img, setImg] = useState("");
   const [addProduct, setAddProduct] = useState({
@@ -93,6 +95,16 @@ export default function UpdateProduct({ update, setUpdate, id }) {
     if (uploadError) {
       alert("Failed to change image profile");
       return;
+    }
+    if (data.size <= 100000) {
+      setImg(data?.url);
+      setAlertI();
+    } else {
+      setAlertI(
+        <div className="w-full bg-red-500 text-center py-1 rounded-lg text-white">
+          Ukuran gambar harus kurang dari 100Kb
+        </div>
+      );
     }
 
     setImg(data?.url);

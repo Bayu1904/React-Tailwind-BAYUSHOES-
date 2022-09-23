@@ -130,7 +130,7 @@ export default function ListProduct() {
                 <Table.Cell>
                   <div
                     className="font-medium text-blue-600 hover:underline dark:text-blue-500 cursor-pointer"
-                    onClick={() => handleUpdate(productID._id)}
+                    onClick={() => handleUpdate(productID[0]?._id)}
                   >
                     Edit
                   </div>
@@ -138,7 +138,7 @@ export default function ListProduct() {
                 <Table.Cell>
                   <div
                     className="font-medium text-red-600 hover:underline dark:text-red-500 cursor-pointer"
-                    onClick={() => handleDelete(productID._id)}
+                    onClick={() => handleDelete(productID[0]?._id)}
                   >
                     Delete
                   </div>
