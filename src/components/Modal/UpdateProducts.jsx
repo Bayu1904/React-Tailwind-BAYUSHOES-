@@ -19,9 +19,7 @@ export default function UpdateProduct({ update, setUpdate, id }) {
   useEffect(() => {
     const findProduct = async () => {
       try {
-        const { data, error } = await kontenbase
-          .service("Products")
-          .getById(id);
+        const { data } = await kontenbase.service("Products").getById(id);
         // setData(response.data.data);
         setAddProduct({
           name: data.name,
