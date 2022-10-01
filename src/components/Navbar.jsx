@@ -9,10 +9,10 @@ export default function Navbar() {
   const [state, dispatch] = useContext(UserContext);
 
   return (
-    <nav class="bg-white border-gray-200 px-2 sm:px-4 dark:bg-gray-900 shadow-md z-10 sticky top-0 rounded-b-sm">
-      <div class="container flex flex-wrap justify-between items-center mx-auto">
+    <nav className="bg-white border-gray-200 px-2 sm:px-4 dark:bg-gray-900 shadow-md z-10 sticky top-0 rounded-b-sm">
+      <div className="container flex flex-wrap justify-between items-center mx-auto">
         <Link to={"/"}>
-          <span class="self-center text-2xl font-bold whitespace-nowrap text-orange-700">
+          <span className="self-center text-2xl font-bold whitespace-nowrap text-orange-700">
             BayuSHOES.
           </span>
         </Link>

@@ -4,6 +4,7 @@ import { kontenbase } from "../../config/base";
 
 export default function AddProductModal({ state, setState }) {
   const navigate = useNavigate();
+  const [alert2, setAlert2] = useState();
   const [alertI, setAlertI] = useState();
   const [preview, setPreview] = useState(null);
   const [nameUrl, setNameUrl] = useState();
@@ -16,6 +17,7 @@ export default function AddProductModal({ state, setState }) {
     notes: "",
     stok: "",
   });
+  const [data, setData] = useState("");
 
   const { name, price_buy, notes, stok, price_sell } = addProduct;
 
@@ -40,31 +42,42 @@ export default function AddProductModal({ state, setState }) {
 
       const pricenew = parseInt(price_buy);
       const price2new = parseInt(price_sell);
-      const { data, error: ErrorProfile } = await kontenbase
-        .service("Products")
-        .create({
-          name,
-          notes,
-          image: img,
-          stok,
-          price_buy: pricenew,
-          price_sell: price2new,
-        });
-
-      if (ErrorProfile) {
-        alert(ErrorProfile.message);
-        return;
+      const { data, error } = await kontenbase.service("Products").find({
+        where: { name: addProduct.name },
+      });
+      setData(data);
+      if (data.length > 0) {
+        setAlert2(
+          <div className="w-full bg-red-500 text-center py-1 rounded-lg text-white">
+            Nama sudah tersedia, gunakan nama lain!
+          </div>
+        );
+      } else {
+        const { data, error: ErrorProfile } = await kontenbase
+          .service("Products")
+          .create({
+            name,
+            notes,
+            image: img,
+            stok,
+            price_buy: pricenew,
+            price_sell: price2new,
+          });
+        if (ErrorProfile) {
+          alert("Maksimal gambar 100Kb");
+          return;
+        } else {
+          alert(
+            "berhasil menambahkan Product " +
+              ", refresh halaman anda untuk update!"
+          );
+          delay(100);
+          setState(!state);
+        }
       }
 
-      alert(
-        "berhasil menambahkan Product " +
-          data.name +
-          ", refresh halaman anda untuk update!"
-      );
-      delay(100);
-      setState(!state);
       // regClose();
-      navigate("/");
+      // navigate("/");
     } catch (error) {
       console.log(error);
     }
@@ -103,6 +116,7 @@ export default function AddProductModal({ state, setState }) {
         <div className="text-2xl font-bold mb-3 text-orange-500">
           ADD Product
         </div>
+        {alert2}
         {alertI}
         <form
           onSubmit={(e) => handleSubmit(e)}
@@ -115,12 +129,14 @@ export default function AddProductModal({ state, setState }) {
             value={name}
             className="bg-white rounded-md border-none focus:ring-orange-600"
             placeholder="Title"
+            required
           />
           <input
             type="file"
             onChange={handleChangeImage}
             name="image"
             className="bg-white rounded-md"
+            required
           />
           <textarea
             name="notes"
@@ -129,6 +145,7 @@ export default function AddProductModal({ state, setState }) {
             value={notes}
             className="bg-white rounded-md border-none focus:ring-orange-500 w-full h-40"
             placeholder="Description"
+            required
           ></textarea>
           <input
             type="number"
@@ -137,6 +154,7 @@ export default function AddProductModal({ state, setState }) {
             value={stok}
             className="bg-white rounded-md border-none focus:ring-orange-500"
             placeholder="Stok"
+            required
           />
           <input
             type="number"
@@ -145,6 +163,7 @@ export default function AddProductModal({ state, setState }) {
             value={price_buy}
             className="bg-white rounded-md border-none focus:ring-orange-500"
             placeholder="Price exam: 5000000"
+            required
           />
           <input
             type="number"
@@ -153,6 +172,7 @@ export default function AddProductModal({ state, setState }) {
             value={price_sell}
             className="bg-white rounded-md border-none focus:ring-orange-500"
             placeholder="Sell price exam: 6000000"
+            required
           />
           <button className="w-3/4 m-auto py-2 bg-orange-500 rounded-md font-bold text-white">
             {" "}

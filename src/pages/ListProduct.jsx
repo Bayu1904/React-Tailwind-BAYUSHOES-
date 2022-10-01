@@ -42,7 +42,6 @@ export default function ListProduct() {
     Bel();
     find();
   }, [userSelect]);
-  console.log(productID);
 
   let handleDelete = async (id) => {
     let person = prompt("Input 'DELETE' for Delete Product", "DELETE");

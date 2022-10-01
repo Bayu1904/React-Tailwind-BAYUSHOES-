@@ -5,6 +5,8 @@ export default function UpdateProduct({ update, setUpdate, id }) {
   const [preview, setPreview] = useState(null);
   const [alertI, setAlertI] = useState();
 
+  const [alert2, setAlert2] = useState();
+
   const [nameUrl, setNameUrl] = useState();
   const [img, setImg] = useState("");
   const [addProduct, setAddProduct] = useState({
@@ -57,30 +59,42 @@ export default function UpdateProduct({ update, setUpdate, id }) {
     try {
       e.preventDefault();
       const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
-
       const pricenew = parseInt(price_buy);
       const price2new = parseInt(price_sell);
-      const { data, error: ErrorProfile } = await kontenbase
-        .service("Products")
-        .updateById(id, {
-          name,
-          notes,
-          image: img,
-          stok,
-          price_buy: pricenew,
-          price_sell: price2new,
-        });
 
-      if (ErrorProfile) {
-        alert(ErrorProfile.message);
-        return;
+      const { data1 } = await kontenbase.service("posts").find({
+        where: { name: name },
+      });
+
+      if (data1) {
+        setAlert2(
+          <div className="w-full bg-red-500 text-center py-1 rounded-lg text-white">
+            nama sudah tersedia, gunakan nama lain!
+          </div>
+        );
+      } else {
+        const { data, error: ErrorProfile } = await kontenbase
+          .service("Products")
+          .updateById(id, {
+            name,
+            notes,
+            image: img,
+            stok,
+            price_buy: pricenew,
+            price_sell: price2new,
+          });
+
+        if (ErrorProfile) {
+          alert("Maksimal gambar 100Kb");
+          return;
+        } else {
+          alert(
+            "berhasil UPDATE DATA " + data.name + "refresh halaman untuk update"
+          );
+          delay(500);
+          setUpdate(!update);
+        }
       }
-
-      alert(
-        "berhasil UPDATE DATA " + data.name + "refresh halaman untuk update"
-      );
-      delay(500);
-      setUpdate(!update);
     } catch (error) {
       console.log(error);
     }
@@ -104,8 +118,6 @@ export default function UpdateProduct({ update, setUpdate, id }) {
         </div>
       );
     }
-
-    setImg(data?.url);
   };
 
   return (
@@ -125,6 +137,8 @@ export default function UpdateProduct({ update, setUpdate, id }) {
           onSubmit={(e) => handleSubmit(e)}
           className="flex flex-col gap-4 mt-6"
         >
+          {alertI}
+          {alert2}
           <input
             type="text"
             name="name"

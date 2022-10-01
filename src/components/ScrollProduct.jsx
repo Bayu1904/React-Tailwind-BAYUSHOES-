@@ -38,7 +38,10 @@ export default function Scroll() {
           className="flex flex-row gap-9 w-full overflow-x-scroll scroll whitespace-nowrap scroll-smooth scrollbar-hide"
         >
           {products?.map((item, i) => (
-            <div className="flex flex-col w-44 bg-white rounded-md hover:bg-slate-200 cursor-pointer">
+            <div
+              key={i}
+              className="flex flex-col w-44 bg-white rounded-md hover:bg-slate-200 cursor-pointer"
+            >
               <img src={item.image} alt="" className="rounded-t-md" />
               <div className="p-2 ">
                 <div className="text-orange-800 font-bold">{item.name}</div>
